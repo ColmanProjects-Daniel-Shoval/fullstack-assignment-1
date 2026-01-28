@@ -1,8 +1,8 @@
+import { config } from "config/config";
 import initApp from "./server";
-const port = process.env.PORT;
 
 initApp().then((app) => {
-    app.listen(port, () => {
-        console.log(`Example app listening and running on http://localhost:${port}`);
+    app.listen(config.PORT, () => {
+        console.log(`Example app listening and running on http://localhost:${config.PORT}`);
     });
 });

@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import { config } from "config/config";
 
 dotenv.config();
 
@@ -17,11 +18,11 @@ db.once("open", () => console.log("Connected to Database"));
 
 const initApp = () => {
     return new Promise<Express>((resolve, reject) => {
-        if (!process.env.DATABASE_URL) {
+        if (!config.DATABASE_URL) {
             reject("DATABASE_URL is not defined in .env file");
         } else {
             mongoose
-                .connect(process.env.DATABASE_URL)
+                .connect(config.DATABASE_URL)
                 .then(() => {
                     resolve(app);
                 })
