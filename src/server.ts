@@ -1,0 +1,35 @@
+import express, { Express } from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+
+dotenv.config();
+
+const app = express();
+
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const db = mongoose.connection;
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("Connected to Database"));
+
+const initApp = () => {
+    return new Promise<Express>((resolve, reject) => {
+        if (!process.env.DATABASE_URL) {
+            reject("DATABASE_URL is not defined in .env file");
+        } else {
+            mongoose
+                .connect(process.env.DATABASE_URL)
+                .then(() => {
+                    resolve(app);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        }
+    });
+};
+
+export default initApp;
